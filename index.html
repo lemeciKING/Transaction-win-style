@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIN STYLE - Paiements Sécurisés</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #00CEFF;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --error: #F44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light) 0%, #DFE6E9 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        header {
+            background: white;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .menu-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: absolute;
+            right: 1.5rem;
+            box-shadow: 0 3px 10px rgba(108, 94, 231, 0.3);
+            transition: all 0.3s;
+            z-index: 101;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(108, 94, 231, 0.4);
+        }
+
+        .menu-toggle i {
+            font-size: 1.3rem;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 250px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 0 0 0 15px;
+            z-index: 100;
+        }
+
+        .mobile-nav.active {
+            display: block;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        .mobile-nav a {
+            display: block;
+            padding: 1rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+
+        .mobile-nav a:hover {
+            background: var(--light);
+            padding-left: 1.5rem;
+        }
+
+        .mobile-nav i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        header img {
+            height: 60px;
+            transition: transform 0.3s;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .security-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: var(--success);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.1rem;
+            color: var(--dark);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            position: relative;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+        .card:nth-child(4) { animation-delay: 0.8s; }
+        .card:nth-child(5) { animation-delay: 1s; }
+        .card:nth-child(6) { animation-delay: 1.2s; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .fee-indicator {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .payment-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .payment-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .payment-btn i {
+            margin-right: 8px;
+        }
+
+        .confirmation-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            max-width: 90%;
+            width: 350px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .confirmation-box i {
+            font-size: 2rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-box p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .contact-item i {
+            color: var(--secondary);
+            background: rgba(255,255,255,0.1);
+            padding: 0.7rem;
+            border-radius: 50%;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.1);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="header-content">
+            <img src="logo2.png" alt="Logo WIN STYLE">
+            <div>
+                <h1>WIN STYLE</h1>
+                <div class="security-badge">
+                    <i class="fas fa-lock"></i> Paiements Sécurisés
+                </div>
+            </div>
+        </div>
+
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="https://votresite.com/accueil"><i class="fas fa-home"></i> Accueil</a>
+            <a href="https://votresite.com/a-propos"><i class="fas fa-tshirt"></i> UNIVERS WIN STYLE</a>
+            <a href="#contact"><i class="fas fa-phone"></i> Contact</a>
+        </nav>
+    </header>
+
+    <div class="welcome-message">
+        <h2>Plateforme de Paiement WIN STYLE</h2>
+        <p>Sélectionnez votre réseau mobile pour effectuer votre transaction en toute sécurité</p>
+    </div>
+
+    <div class="container">
+        <!-- Orange Money -->
+        <div class="card">
+            <img src="https://files.catbox.moe/h2jpok.jpg" alt="Orange Money">
+            <p>Orange Money</p>
+            <div class="fee-indicator">Temps estimé : 1 minute</div>
+            <button class="payment-btn" onclick="processPayment('orange', this)">
+                <i class="fas fa-mobile-alt"></i> Payer avec Orange Money
+            </button>
+        </div>
+
+        <!-- MTN Money -->
+        <div class="card">
+            <img src="https://files.catbox.moe/bghu0y.jpg" alt="MTN Money">
+            <p>MTN Mobile Money</p>
+            <div class="fee-indicator">Temps estimé : 1 minute</div>
+            <button class="payment-btn" onclick="processPayment('mtn', this)">
+                <i class="fas fa-mobile-alt"></i> Payer avec MTN
+            </button>
+        </div>
+
+        <!-- Moov Money -->
+        <div class="card">
+            <img src="https://files.catbox.moe/wl3xzc.jpg" alt="Moov Money">
+            <p>Moov Money</p>
+            <div class="fee-indicator">Temps estimé : 1 minute</div>
+            <button class="payment-btn" onclick="processPayment('moov', this)">
+                <i class="fas fa-mobile-alt"></i> Payer avec Moov
+            </button>
+        </div>
+
+        <!-- Wave -->
+        <div class="card">
+            <img src="https://files.catbox.moe/bj03jq.jpg" alt="Wave">
+            <p>Wave</p>
+            <div class="fee-indicator">Temps estimé : 1-2 minutes</div>
+            <button class="payment-btn" onclick="processPayment('wave', this)">
+                <i class="fas fa-wallet"></i> Payer avec Wave
+            </button>
+        </div>
+
+        <!-- Trésor Money -->
+        <div class="card">
+            <img src="tresor money.png" alt="Trésor Money">
+            <p>Trésor Money</p>
+            <div class="fee-indicator">Temps estimé : 1-2 minutes</div>
+            <button class="payment-btn" onclick="processPayment('tresor', this)">
+                <i class="fas fa-wallet"></i> Payer avec Trésor
+            </button>
+        </div>
+
+        <!-- DJAMO -->
+        <div class="card">
+            <img src="djamo.png" alt="DJAMO">
+            <p>DJAMO</p>
+            <div class="fee-indicator">Temps estimé : 1-2 minutes</div>
+            <button class="payment-btn" onclick="processPayment('djamo', this)">
+                <i class="fas fa-credit-card"></i> Payer avec DJAMO
+            </button>
+        </div>
+    </div>
+
+    <div class="confirmation-box" id="confirmationBox">
+        <i class="fas fa-check-circle"></i>
+        <p id="confirmationText">Paiement confirmé</p>
+        <p>Veuillez patienter...</p>
+    </div>
+
+    <footer>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span> +225 05 07 97 11 54 / 01 03 63 65 77</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span> winstyle04@gmail.com</span>
+            </div>
+        </div>
+
+        <div class="social-links" id="contact">
+            <a href="https://www.facebook.com/share/1BuFBGpP55/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/winstyleci?igsh=aWg0MTNjdHR1dHJn"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/+2250507971154"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.tiktok.com/@winstyleci?_t=ZM-8yUgOaUyZoG&_r=1"><i class="fab fa-tiktok"></i></a>
+        </div>
+
+        <div class="copyright">
+            &copy; WIN STYLE 2022 - Tous droits réservés
+        </div>
+    </footer>
+
+    <script>
+        // Configuration des méthodes de paiement
+        const paymentConfig = {
+            orange: {
+                name: "Orange Money",
+                type: "ussd",
+                code: "*144*1*1*0778652631#",
+                redirect: null
+            },
+            mtn: {
+                name: "MTN Mobile Money",
+                type: "ussd",
+                code: "*133*3*1*0507971154#",
+                redirect: null
+            },
+            moov: {
+                name: "Moov Money",
+                type: "ussd",
+                code: "*155*1*1*0103636577#",
+                redirect: null
+            },
+            wave: {
+                name: "Wave",
+                type: "redirect",
+                code: null,
+                redirect: "https://lemeciking.github.io/Wave/"
+            },
+            tresor: {
+                name: "Trésor Money",
+                type: "redirect",
+                code: null,
+                redirect: "https://lemeciking.github.io/tresor-money/"
+            },
+            djamo: {
+                name: "DJAMO",
+                type: "redirect",
+                code: null,
+                redirect: "https://lemeciking.github.io/Djamo/"
+            }
+        };
+
+        // Fonction principale de traitement des paiements
+        function processPayment(method, button) {
+            const config = paymentConfig[method];
+
+            if (!config) {
+                showConfirmation("Méthode non disponible", "error");
+                return;
+            }
+
+            // Désactiver le bouton
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
+
+            // Afficher confirmation
+            showConfirmation(`Paiement ${config.name} en cours`);
+
+            // Exécuter le paiement après un court délai
+            setTimeout(() => {
+                if (config.type === "ussd" && config.code) {
+                    // Paiement USSD
+                    const cleanCode = config.code.replace(/#/g, '%23').replace(/\*/g, '%2A');
+                    window.location.href = `tel:${cleanCode}`;
+                } else if (config.type === "redirect" && config.redirect) {
+                    // Paiement par redirection
+                    window.open(config.redirect, '_blank');
+                }
+
+                // Réactiver le bouton après 3s
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.innerHTML = `<i class="fas fa-${method === 'orange' || method === 'mtn' || method === 'moov' ? 'mobile-alt' : method === 'wave' || method === 'tresor' ? 'wallet' : 'credit-card'}"></i> Payer avec ${config.name}`;
+                }, 3000);
+            }, 3000);
+        }
+
+        // Afficher les messages de confirmation
+        function showConfirmation(message, type = "success") {
+            const box = document.getElementById('confirmationBox');
+            const text = document.getElementById('confirmationText');
+            const icon = box.querySelector('i');
+
+            // Configurer l'icône
+            icon.className = type === "error" ? "fas fa-exclamation-circle"
+                           : type === "warning" ? "fas fa-info-circle"
+                           : "fas fa-check-circle";
+
+            icon.style.color = type === "error" ? "var(--error)"
+                              : type === "warning" ? "var(--warning)"
+                              : "var(--success)";
+
+            text.textContent = message;
+            box.style.display = 'block';
+
+            // Masquer après 4s
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 4000);
+        }
+
+        // Gestion du menu burger
+        function toggleMenu() {
+            const nav = document.getElementById('mobileNav');
+            nav.classList.toggle('active');
+        }
+
+        // Animation au chargement
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${0.2 + (index * 0.5)}s`;
+            });
+        });
+
+        // Fermer le menu en cliquant à l'extérieur
+        window.addEventListener('click', function(event) {
+            const nav = document.getElementById('mobileNav');
+            const menuBtn = document.querySelector('.menu-toggle');
+
+            if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
